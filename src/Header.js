@@ -14,9 +14,11 @@ export default function Header() {
   const [open, setOpen] = useState(false);
   const [liked, setLiked] = useState(false);
   const [formSubmission, setFormSubmission] = useState(null);
-  
-  const { addList} = useListContext();
 
+  // Accessing addList function from ListContext
+  const { addList } = useListContext();
+
+  // Function to handle closing the toast
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
       return;
@@ -25,6 +27,7 @@ export default function Header() {
     setOpen(false);
   };
 
+  // Function to handle liking a form submission
   const handleLikedSubmission = () => {
     if (!formSubmission) return;
     const { liked, ...rest } = formSubmission.data;
@@ -65,6 +68,7 @@ export default function Header() {
           >
             New Submission
           </Button>
+          {/* Display the toast if there is a form submission */}
           {formSubmission && formSubmission.data && (
             <SnackBarToast
               open={open}

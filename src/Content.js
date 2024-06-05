@@ -16,18 +16,20 @@ import {
 import { useListContext } from "./context/ListContext";
 
 export default function Content() {
+  // Retrieve data, loading state, and error from the ListContext
   const { lists, loading, error } = useListContext();
   return (
     <Box sx={{ marginTop: 3 }}>
       <Typography variant="h4">Liked Form Submissions</Typography>
-
+      {/* If there's a server error, display an alert */}
       {error && error.status === 500 ? (
         <Stack spacing={2} sx={{ width: "100%" }}>
           <Alert severity="error">{error.message}</Alert>
         </Stack>
-      ) : loading ? (
+      ) : loading ? ( // If data is still loading, show a loading spinner
         <CircularProgress sx={{ justifyContent: "center", mt: 5 }} />
       ) : (
+        // If data is loaded, display the table
         <TableContainer component={Paper} sx={{ mt: 5 }}>
           <Table>
             <TableHead>
