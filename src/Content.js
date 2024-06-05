@@ -1,15 +1,60 @@
-import React from 'react';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
+import React from "react";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import {
+  Table,
+  TableContainer,
+  TableHead,
+  TableRow,
+  TableCell,
+  Paper,
+  TableBody,
+  CircularProgress,
+  Stack,
+  Alert,
+} from "@mui/material";
+import { useListContext } from "./context/ListContext";
 
 export default function Content() {
+  const { lists, loading, error } = useListContext();
   return (
-    <Box sx={{marginTop: 3}}>
+    <Box sx={{ marginTop: 3 }}>
       <Typography variant="h4">Liked Form Submissions</Typography>
 
-      <Typography variant="body1" sx={{fontStyle: 'italic', marginTop: 1}}>
-        TODO: List of liked submissions here (delete this line)
-      </Typography>
+      {error && error.status === 500 ? (
+        <Stack spacing={2} sx={{ width: "100%" }}>
+          <Alert severity="error">{error.message}</Alert>
+        </Stack>
+      ) : loading ? (
+        <CircularProgress sx={{ justifyContent: "center", mt: 5 }} />
+      ) : (
+        <TableContainer component={Paper} sx={{ mt: 5 }}>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell sx={{ fontWeight: "bold" }}>First Name</TableCell>
+                <TableCell sx={{ fontWeight: "bold" }}>Last Name</TableCell>
+                <TableCell sx={{ fontWeight: "bold" }}>Email</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {lists && lists.length ? (
+                lists.map((row, index) => (
+                  <TableRow key={index}>
+                    <TableCell>{row.firstName}</TableCell>
+                    <TableCell>{row.lastName}</TableCell>
+                    <TableCell>{row.email}</TableCell>
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell>No data</TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      )}
     </Box>
   );
 }
